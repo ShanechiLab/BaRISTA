@@ -4,7 +4,7 @@ PyTorch implementation of BaRISTA. Code will be released shortly!
 More information about the model can be found in our manuscript below.
 
 ## Publication
-[Oganesian, L. L.*, Hashemi, S.*, Shanechi, M. M. BaRISTA: Brain Scale Informed Spatiotemporal Representation of Human Intracranial Neural Activity. In Advances in Neural Information Processing Systems 2025.](https://openreview.net/forum?id=LDjBDk3Czb)
+[Oganesian, L. L.\*, Hashemi, S.\*, Shanechi, M. M. BaRISTA: Brain Scale Informed Spatiotemporal Representation of Human Intracranial Neural Activity. In Advances in Neural Information Processing Systems 2025.](https://openreview.net/forum?id=LDjBDk3Czb)
 
 ## Licence
 Copyright (c) 2025 University of Southern California  <br />
