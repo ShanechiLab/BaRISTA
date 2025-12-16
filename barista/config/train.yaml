@@ -1,0 +1,15 @@
+seed: 0
+checkpoint_path: "pretrained_models/parcels_chans.ckpt"
+device: cuda:0
+epochs: 30
+dataloader:
+  drop_last: False
+  drop_last_val: False
+  num_workers: 16
+  batch_size: 128
+  persistent_workers: False
+  pin_memory: True
+optimization:
+  finetune_lr: 1e-4
+  new_param_lr: 1e-3
+  freeze_tokenizer: True

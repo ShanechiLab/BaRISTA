@@ -1,0 +1,36 @@
+backbone:
+  num_layers: 12
+  d_hidden: 64
+  d_input: ${backbone.d_hidden} # same as d hidden
+  d_out: ${backbone.d_hidden} # same as d hidden
+  mlp_ratio: 4
+  norm: rmsnorm
+  norm_eps: 1e-8
+  activation: gelu
+  num_heads: 4
+  max_position: 1024
+  dropout: 0.1
+
+tokenizer:
+  temporal_encoder:
+    input_dims: 128 
+    output_dims: 128
+    hidden_dims: 5
+    depth: 4 # Zero-index (will have 5 convolution blocks all together)
+    kernel_size: 3
+    stride: 1
+    enable_checkpointing: False
+
+  temporal_subsegment_len: 512
+  temporal_subsegment_step: 512
+
+  samp_frequency: 2048
+  num_seconds: 3
+
+  d_hidden: ${backbone.d_input}
+
+  add_spatial_encoding: True
+  spatial_grouping: destrieux # coords | destrieux | lobes
+
+  embedding_max_dim: # leave empty for no normalization of embeddings
+  embedding_init_scale: 1.0

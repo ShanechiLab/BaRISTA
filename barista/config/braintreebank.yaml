@@ -1,0 +1,117 @@
+## Directory where the raw data exists.
+dataset_dir: "braintreebank_raw" 
+## Directory where to save the preprocessed data.
+save_dir: "braintreebank_data_segments"
+## Directory where to store cached stage 1 preprocessed data (i.e., filtered, rereferenced) to then segment.
+stage1_cache_dir: "braintreebank_processed_raw_cache"
+
+samp_frequency: 2048 # in Hz. Default: 2048.
+segment_length_s: 3
+region_filtering:
+  active: True
+  # Use region names that partially match the Destrieux column in the
+  # localization file to exclude channels.
+  filters:
+    - GRID
+    - VENT
+
+aggregate_labels:
+  nan_threshold: 1 # value between 0 and 1, drop segments with more than this percentage of NaNs
+  type: threshold # threshold | mean
+  threshold: 0.5
+
+quantile_numerical_labels:
+  active: True
+  lower_threshold: 0.25
+  higher_threshold: 0.75
+
+force_balanced: True
+force_nonoverlap: True
+
+## NOTE: val_ratio and test_ratio only used for shuffle & random splits.
+val_ratio: 0.1
+test_ratio: 0.1
+
+## NOTE: run_ratios only used for chronological splits; use val_ratio and test_ratio in
+## dataset/single/base.yaml for shuffle & random splits.
+run_ratios: [0.8, 0.1, 0.1]
+run_splits: ["train", "val", "test"]
+chron_fold_num: 0 # Chronological fold number to use. Default is ratios & splits in config. 
+
+## This is the step size used when generating negative sample segments for sentence_onset*
+## and speech_vs_nonspeech* tasks.
+nonword_stepsize_s:  # leave empty for no nonword overlap (i.e., step = segment length)
+
+trial_alignment: center # center only supported for now. Can extend to other alignments as desired.
+subjects_to_process: # list of which subjects to process, set empty to run for all available
+  # -  SUBJ_1
+  # -  SUBJ_2
+  # -  SUBJ_3
+  # - SUBJ_4
+  # - SUBJ_5
+  # - SUBJ_6
+  # - SUBJ_7
+  # - SUBJ_8
+  # - SUBJ_9
+  # - SUBJ_10
+  - HOLDSUBJ_1
+  - HOLDSUBJ_2
+  - HOLDSUBJ_3
+  - HOLDSUBJ_4
+  - HOLDSUBJ_6
+  - HOLDSUBJ_7
+  - HOLDSUBJ_10
+
+# Options:
+# "speech_vs_nonspeech" | "sentence_onset" [random split]
+# "sentence_onset_time" | "speech_vs_nonspeech_time" | "volume" | "optical_flow" [chronological split]
+experiment: "sentence_onset_time"
+
+### Dataset processing
+skip_segment_generation_completely: False
+force_reprocess_stage1: False
+force_reprocess_stage2: False
+force_recreate_spatial_groupings: False
+
+processing_save_interval: 100 # save files every # of segments
+processing_log_interval: 50
+
+use_fixed_seed_for_splitter: True
+split_together_length_s: 3 # Note: Recommended to use the same value as segment_length_s above
+
+shuffle_dataloader: True
+
+# Note: Recommendation is to use the full subject_session label here.
+pretrain_sessions:
+  - SUBJ_1_S1_0
+  # - SUBJ_1_S1_2
+  # - SUBJ_2_S2_0        
+  # - SUBJ_2_S2_1
+  # - SUBJ_2_S2_2        
+  # - SUBJ_2_S2_3
+  # - SUBJ_2_S2_4        
+  # - SUBJ_3_S3_1
+  # - SUBJ_3_S3_2
+  # - SUBJ_4_S4_1
+  # - SUBJ_5_S5_0
+  # - SUBJ_6_S6_0
+  # - SUBJ_6_S6_1
+  # - SUBJ_7_S7_1
+  # - SUBJ_8_S8_0
+  # - SUBJ_9_S9_0
+  # - SUBJ_10_S10_1
+finetune_sessions:
+  # - SUBJ_2_S2_5 # Pseudo held out
+  # - SUBJ_4_S4_2 # Pseudo held out
+  - HOLDSUBJ_1_HS1_1
+  # - HOLDSUBJ_2_HS2_6
+  # - HOLDSUBJ_3_HS3_0
+  # - HOLDSUBJ_4_HS4_0
+  # - HOLDSUBJ_6_HS6_4
+  # - HOLDSUBJ_7_HS7_0
+  # - HOLDSUBJ_10_HS10_0
+
+spatial_groupings_to_create:
+  - coords
+  - destrieux
+  - lobes
