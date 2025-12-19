@@ -37,7 +37,7 @@ python -m pip install -e .
 
 1. Download the data from the [Brain Treebank website](https://braintreebank.dev/). You will also need the `clean_laplacian.json` file from the [PopT codebase](https://github.com/czlwang/PopulationTransformer/blob/main/electrode_selections/clean_laplacian.json).
 
-2. Update the `dataset_dir` config in `barista/braintreebank.yaml` to point to the the raw data path.
+2. Update the `dataset_dir` config in `barista/braintreebank.yaml` to point to the raw data path.
 
 The data directory structure should have the following structure: 
 
@@ -106,7 +106,8 @@ You must segment the data **before training**. The required arguments depend on 
 | **1. Random splits**, non-overlapping neural segments (Main Analysis in the paper) | `True`               | `sentence_onset`, `speech_vs_nonspeech` |
 | **2. Chronological splits**, increased labels (Appendix K in the paper)         | `False`              | `sentence_onset_time`, `speech_vs_nonspeech_time`, `volume`, `optical_flow` |
 
-### 1. Generating random splits with non-overlapping neural segments
+### 1. Generating Random Splits with Non-Overlapping Neural Segments
+
 To generate the random splits with non-overlapping neural segments, as used for the main analysis (Section 4), you will need to run the following:
 
 ```bash
@@ -120,7 +121,7 @@ python barista/prepare_segments.py \
 
 This setting should **only** be used with the `sentence_onset` and `speech_vs_nonspeech` experiments.
 
-### 2. Generating chronological splits with increased label data
+### 2. Generating Chronological Splits with Increased Label Data
 We can also generate chronological splitting (splitting sessions based on time rather than random shuffling). This approach enables us to increase the number of labeled segments for finetuning by allowing overlap between segments within the same split, while preventing information leakage (i.e., no overlapping neural segments) between train and test splits. To generate the chronological splits used for the evaluation in Appendix K, there are two steps to follow.
 
 First, you will need to segment the data using the following command:
@@ -146,7 +147,7 @@ Second, you will need to generate the 5 chronological folds to use during evalua
 
 The notebook will output a pickle file in the same directory as the specified metadata file and it will be dynamically loaded during train/eval time to ensure the right chronological split fold is used.
 
-## Finetuning the model
+## Finetuning the Model
 To finetune the model, 
 
 1. Set update `finetune_sessions` field in `barista/config/braintreebank.yaml` to the desired finetuning session.
@@ -159,7 +160,7 @@ python barista/train.py
 
 It is important to ensure the `braintreebank.yaml` fields match precisely with the config used during segmentation generation, including the `experiment` field. Otherwise, the metadata hash string will not match and the experiment will fail. For the chronological folds, the experiment will also fail if the pickle file outlined in the second step of [Generating chronological splits with increased label data](#generating-chronological-splits-with-increased-label-data) hasn't been generated.
 
-### Loading pretrained model
+### Loading Pretrained Model
 
 Pretrained models are available under `pretrained_models/`. Set the `checkpoint_path` in `barista/config/train.yaml` to the specific pretrained model path. e.g. `checkpoint_path: pretrained_models/parcels_chans.ckpt`.
 
@@ -182,7 +183,7 @@ python barista/train.py \
     checkpoint_path="pretrained_models/parcels_chans.ckpt"
 ```
 
-## Additional scripts
+## Additional Scripts
 
 You can also use the scripts under `barista/utility_scripts` to run the model for a specific setting across different finetuning seeds. 
 The run outputs are saved in the results directory specified in the script and can be easily aggregated using `aggregate_runs.py` across different subjects, models, and folds.
@@ -209,7 +210,7 @@ The run outputs are saved in the results directory specified in the script and c
     --exp sentence_onset_time
 ```
 
-**Aggregating results**
+### Aggregating Results
 
 You can use `utility_scripts/aggregate_runs.py` to get the average results as a markdown table:
 
@@ -236,7 +237,7 @@ python barista/utility_scripts/aggregate_runs.py \
 ```
 
 
-## Licence
+## License
 Copyright (c) 2025 University of Southern California  <br />
 See full notice in [LICENSE.md](LICENSE.md)  <br />
 Lucine L. Oganesian, Saba Hashemi, and Maryam M. Shanechi  <br />
